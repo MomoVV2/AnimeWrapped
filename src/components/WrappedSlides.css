@@ -1,0 +1,636 @@
+.slide {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  color: white;
+  position: relative;
+}
+
+.slide h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.slide h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* Welcome Slide */
+.welcome-slide {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.user-avatar {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin-bottom: 2rem;
+  border: 5px solid white;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Watch Time Slide */
+.watch-time-slide {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.big-number {
+  font-size: 8rem;
+  font-weight: 900;
+  line-height: 1;
+  margin: 1rem 0;
+  text-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.sub-stats {
+  display: flex;
+  gap: 4rem;
+  margin: 2rem 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.stat-label {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+.fun-fact {
+  margin-top: 2rem;
+  font-size: 1.3rem;
+  opacity: 0.9;
+}
+
+/* Genres Slide */
+.genres-slide {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.genre-list, .studio-list {
+  width: 100%;
+  max-width: 600px;
+  margin-top: 2rem;
+}
+
+.genre-item, .studio-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s;
+}
+
+.genre-item:hover, .studio-item:hover {
+  transform: scale(1.05);
+}
+
+.genre-rank, .studio-rank {
+  font-size: 2rem;
+  font-weight: 700;
+  min-width: 60px;
+}
+
+.genre-name, .studio-name {
+  flex: 1;
+  font-size: 1.5rem;
+  text-align: left;
+}
+
+.genre-count, .studio-count {
+  font-size: 1.2rem;
+  opacity: 0.8;
+}
+
+/* Studios Slide */
+.studios-slide {
+  background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+}
+
+/* Top Anime Slide */
+.top-anime-slide {
+  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+  overflow-y: auto;
+}
+
+.top-anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+.anime-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s;
+  position: relative;
+}
+
+.anime-card:hover {
+  transform: translateY(-10px);
+}
+
+.anime-rank {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 900;
+  font-size: 1.2rem;
+  z-index: 1;
+}
+
+.anime-card img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.anime-info {
+  padding: 1rem;
+}
+
+.anime-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+.anime-score {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.see-more-btn {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid white;
+  color: white;
+  border-radius: 50px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(10px);
+}
+
+.see-more-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: scale(1.05);
+}
+
+/* Activity Slide */
+.activity-slide {
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+  color: #333;
+}
+
+.activity-slide h1 {
+  color: #333;
+}
+
+.activity-subtitle {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.activity-chart {
+  display: flex;
+  gap: 0.5rem;
+  align-items: flex-end;
+  height: 250px;
+  margin: 2rem 0;
+}
+
+.month-bar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bar {
+  width: 100%;
+  background: linear-gradient(to top, #667eea, #764ba2);
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  min-height: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.bar:hover {
+  opacity: 0.8;
+}
+
+.bar-value {
+  color: white;
+  font-weight: 700;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.month-label {
+  font-size: 0.9rem;
+  color: #666;
+  font-weight: 600;
+}
+
+/* Summary Slide */
+.summary-slide {
+  background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+  color: #333;
+}
+
+.summary-slide h1 {
+  color: #333;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin: 3rem 0;
+  max-width: 700px;
+}
+
+.summary-item {
+  background: rgba(255, 255, 255, 0.5);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.summary-value {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #667eea;
+}
+
+.summary-label {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.thank-you {
+  font-size: 1.5rem;
+  margin-top: 2rem;
+  color: #333;
+}
+
+/* Completion Rate Slide */
+.completion-slide {
+  background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.completion-stats {
+  display: flex;
+  gap: 3rem;
+  margin-top: 3rem;
+}
+
+.completion-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.stat-icon {
+  font-size: 3rem;
+}
+
+/* Score Distribution Slide */
+.score-dist-slide {
+  background: linear-gradient(135deg, #ee0979 0%, #ff6a00 100%);
+}
+
+.score-chart {
+  display: flex;
+  gap: 0.8rem;
+  align-items: flex-end;
+  justify-content: center;
+  height: 200px;
+  margin: 2rem 0;
+}
+
+.score-bar-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.score-bar {
+  width: 40px;
+  background: white;
+  border-radius: 10px 10px 0 0;
+  position: relative;
+  min-height: 20px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  transition: transform 0.3s;
+}
+
+.score-bar:hover {
+  transform: scaleY(1.05);
+}
+
+.score-count {
+  color: #ee0979;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-top: 0.3rem;
+}
+
+.score-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* Formats Slide */
+.formats-slide {
+  background: linear-gradient(135deg, #134e5e 0%, #71b280 100%);
+}
+
+.format-spotlight {
+  font-size: 4rem;
+  font-weight: 900;
+  margin: 2rem 0;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.format-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+  max-width: 500px;
+}
+
+.format-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  font-size: 1.2rem;
+}
+
+.format-count {
+  font-weight: 700;
+}
+
+/* Voice Actors Slide */
+.va-slide {
+  background: linear-gradient(135deg, #fc4a1a 0%, #f7b733 100%);
+  overflow-y: auto;
+}
+
+.va-list {
+  width: 100%;
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+}
+
+.va-item {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.2rem 2rem;
+  margin: 0.8rem 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s;
+}
+
+.va-item:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateX(10px);
+}
+
+.va-rank {
+  font-size: 1.8rem;
+  font-weight: 700;
+  min-width: 60px;
+}
+
+.va-name {
+  flex: 1;
+  font-size: 1.3rem;
+  text-align: left;
+}
+
+.va-count {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
+/* Stats Overview Slide */
+.stats-overview-slide {
+  background: linear-gradient(135deg, #8e2de2 0%, #4a00e0 100%);
+}
+
+.stats-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin: 2rem 0;
+  max-width: 700px;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  transition: transform 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-emoji {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: 900;
+  margin: 0.5rem 0;
+}
+
+.stat-text {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Grand Finale Slide */
+.grand-finale-slide {
+  background: linear-gradient(135deg, #000428 0%, #004e92 100%);
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.finale-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 1rem 0;
+  border: 4px solid white;
+}
+
+.finale-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 1200px;
+}
+
+.finale-section {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 1.5rem;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+}
+
+.finale-section h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  opacity: 0.9;
+}
+
+.finale-stat {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0.5rem 0;
+}
+
+.finale-stat-small {
+  font-size: 1rem;
+  margin: 0.3rem 0;
+}
+
+.finale-message {
+  margin: 2rem 0;
+  font-size: 1.2rem;
+  line-height: 1.8;
+}
+
+.finale-message strong {
+  color: #ffd700;
+}
+
+.finale-thanks {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+
+.share-prompt {
+  margin-top: 2rem;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .finale-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+
+  .stats-grid-4 {
+    grid-template-columns: 1fr;
+  }
+
+  .completion-stats {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .score-chart {
+    gap: 0.3rem;
+  }
+
+  .score-bar {
+    width: 25px;
+  }
+
+  .top-anime-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+
+  .anime-card img {
+    height: 200px;
+  }
+
+  .va-item {
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .va-rank {
+    font-size: 1.5rem;
+    min-width: 50px;
+  }
+
+  .va-name {
+    font-size: 1.1rem;
+  }
+}

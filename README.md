@@ -1,46 +1,177 @@
-# Getting Started with Create React App
+# AniList Wrapped 2024 🎉
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A Spotify Wrapped-style year-in-review for your AniList anime watching history. See your 2024 anime stats in a beautiful, shareable format!
 
-## Available Scripts
+## Features
 
-In the project directory, you can run:
+- 📊 Comprehensive 2024 stats (episodes watched, completion rate, watch time)
+- 🎨 Top genres, studios, and anime formats
+- ⭐ Rating patterns and score distribution
+- 🎭 Top voice actors from your anime
+- 📅 Monthly activity breakdown
+- 🎉 Beautiful slide-based presentation with 13+ slides
+- 🔐 Secure OAuth authentication with AniList
 
-### `npm start`
+## Screenshots
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[Your wrapped slides will look amazing here!]
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Quick Start with Docker (Recommended)
 
-### `npm test`
+### Prerequisites
+- Docker and Docker Compose installed
+- AniList account
+- AniList OAuth Application ([Create one here](https://anilist.co/settings/developer))
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Setup
 
-### `npm run build`
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/wrapped_anilist.git
+cd wrapped_anilist
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+2. **Create your .env file**
+```bash
+cp .env.example .env
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+3. **Configure AniList OAuth**
+   - Go to https://anilist.co/settings/developer
+   - Create a new API Client
+   - Set Redirect URI to: `http://localhost:3000/auth/callback` (or your domain)
+   - Copy your Client ID and Client Secret
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+4. **Update .env with your credentials**
+```env
+REACT_APP_ANILIST_CLIENT_ID=your_client_id_here
+REACT_APP_ANILIST_CLIENT_SECRET=your_client_secret_here
+REACT_APP_REDIRECT_URI=http://localhost:3000/auth/callback
+```
 
-### `npm run eject`
+5. **Run with Docker**
+```bash
+docker-compose up -d
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+6. **Access the app**
+   - Open http://localhost:3000
+   - Click "Login with AniList"
+   - Enjoy your 2024 wrapped!
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Manual Setup (Development)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+### Prerequisites
+- Node.js 18+ installed
+- npm or yarn
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Installation
 
-## Learn More
+1. **Install dependencies**
+```bash
+npm install
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+2. **Set up environment variables** (same as Docker setup steps 2-4)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+3. **Start the proxy server** (in one terminal)
+```bash
+node server.js
+```
+
+4. **Start the React app** (in another terminal)
+```bash
+npm start
+```
+
+5. **Access the app at http://localhost:3000**
+
+## Deployment
+
+### Deploy to Production
+
+1. **Update your .env for production**
+```env
+REACT_APP_REDIRECT_URI=https://yourdomain.com/auth/callback
+```
+
+2. **Update AniList OAuth settings**
+   - Go to https://anilist.co/settings/developer
+   - Update Redirect URI to your production domain
+
+3. **Build and deploy with Docker**
+```bash
+docker-compose up -d --build
+```
+
+### Deploy to Cloud Platforms
+
+#### Heroku
+```bash
+heroku create your-app-name
+heroku config:set REACT_APP_ANILIST_CLIENT_ID=your_id
+heroku config:set REACT_APP_ANILIST_CLIENT_SECRET=your_secret
+heroku config:set REACT_APP_REDIRECT_URI=https://your-app-name.herokuapp.com/auth/callback
+git push heroku main
+```
+
+#### Vercel / Netlify
+- The app requires a backend server for OAuth, so you'll need to:
+  - Deploy the proxy server separately (e.g., on Heroku, Railway)
+  - Update `REACT_APP_PROXY_ENDPOINT` in your .env
+  - Deploy the React app to Vercel/Netlify
+
+#### Docker on VPS
+```bash
+# On your VPS
+git clone your-repo
+cd wrapped_anilist
+cp .env.example .env
+# Edit .env with your credentials
+docker-compose up -d
+```
+
+## Technology Stack
+
+- **Frontend**: React 19 + TypeScript
+- **Backend**: Node.js + Express (OAuth proxy)
+- **API**: AniList GraphQL API
+- **Styling**: CSS with gradients and animations
+- **Deployment**: Docker + Docker Compose
+
+## Project Structure
+
+```
+wrapped_anilist/
+├── public/              # Static assets
+├── src/
+│   ├── components/      # React components (slides)
+│   ├── services/        # API and auth logic
+│   ├── App.tsx          # Main app component
+│   └── index.tsx        # Entry point
+├── server.js            # OAuth proxy server
+├── Dockerfile           # Docker configuration
+├── docker-compose.yml   # Docker Compose setup
+└── .env.example         # Environment template
+```
+
+## Contributing
+
+Pull requests are welcome! For major changes, please open an issue first.
+
+## License
+
+MIT License - feel free to use this for your own wrapped!
+
+## Acknowledgments
+
+- [AniList](https://anilist.co) for the amazing API
+- Inspired by Spotify Wrapped
+
+## Support
+
+If you like this project, give it a ⭐ on GitHub!
+
+---
+
+Made with ❤️ for the anime community

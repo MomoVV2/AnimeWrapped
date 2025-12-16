@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:docs.anilist.co)",
+      "WebFetch(domain:anilist.co)",
+      "Bash(npm start)",
+      "Bash(npm install:*)",
+      "Bash(node:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
