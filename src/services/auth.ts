@@ -1,9 +1,20 @@
 const getRedirectUri = () => {
+  // Hardcoded fallback for Vercel deployment
+  const VERCEL_REDIRECT = 'https://anime-wrapped-three.vercel.app/auth/callback';
+
   if (process.env.REACT_APP_REDIRECT_URI) {
+    console.log('Using REACT_APP_REDIRECT_URI:', process.env.REACT_APP_REDIRECT_URI);
     return process.env.REACT_APP_REDIRECT_URI;
   }
 
+  // Production fallback
+  if (typeof window !== 'undefined' && window.location?.hostname === 'anime-wrapped-three.vercel.app') {
+    console.log('Using Vercel production redirect URI');
+    return VERCEL_REDIRECT;
+  }
+
   if (typeof window !== 'undefined' && window.location?.origin) {
+    console.log('Using window.location.origin:', window.location.origin);
     return `${window.location.origin}/`;
   }
 
@@ -11,7 +22,7 @@ const getRedirectUri = () => {
 };
 
 export const AUTH_CONFIG = {
-  clientId: process.env.REACT_APP_ANILIST_CLIENT_ID || '',
+  clientId: process.env.REACT_APP_ANILIST_CLIENT_ID || '33318', // Hardcoded fallback
   redirectUri: getRedirectUri(),
   authEndpoint: 'https://anilist.co/api/v2/oauth/authorize',
   proxyEndpoint: process.env.REACT_APP_PROXY_ENDPOINT
@@ -20,9 +31,15 @@ export const AUTH_CONFIG = {
       : '/api/token'),
 };
 
-// Validate configuration
-if (!AUTH_CONFIG.clientId) {
-  console.error('REACT_APP_ANILIST_CLIENT_ID is not set! Check Vercel environment variables.');
+// Validate and log configuration
+console.log('AUTH_CONFIG:', {
+  clientId: AUTH_CONFIG.clientId,
+  redirectUri: AUTH_CONFIG.redirectUri,
+  proxyEndpoint: AUTH_CONFIG.proxyEndpoint,
+});
+
+if (!process.env.REACT_APP_ANILIST_CLIENT_ID) {
+  console.warn('REACT_APP_ANILIST_CLIENT_ID is not set! Using hardcoded fallback.');
 }
 
 export const initiateLogin = () => {
