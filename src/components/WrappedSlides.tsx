@@ -41,20 +41,122 @@ export const WatchTimeSlide: React.FC<SlideProps> = ({ stats }) => {
   );
 };
 
-export const TopGenresSlide: React.FC<SlideProps> = ({ stats }) => (
-  <div className="slide genres-slide">
-    <h1>Your Top Genres</h1>
-    <div className="genre-list">
-      {stats.topGenres.slice(0, 5).map((genre, index) => (
-        <div key={genre.genre} className="genre-item">
-          <span className="genre-rank">#{index + 1}</span>
-          <span className="genre-name">{genre.genre}</span>
-          <span className="genre-count">{genre.count} anime</span>
+export const TopGenresSlide: React.FC<SlideProps> = ({ stats }) => {
+  const maxCount = stats.topGenres.length > 0 ? stats.topGenres[0].count : 1;
+
+  return (
+    <div className="slide genres-slide-enhanced">
+      <h1>🎨 Your Top Genres</h1>
+
+      {/* Radar/Spider Chart Visualization */}
+      <div className="genre-radar-container">
+        <svg className="genre-radar" viewBox="0 0 300 300">
+          {/* Background circles */}
+          <circle cx="150" cy="150" r="120" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+          <circle cx="150" cy="150" r="90" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+          <circle cx="150" cy="150" r="60" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+          <circle cx="150" cy="150" r="30" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="1"/>
+
+          {/* Axes */}
+          {stats.topGenres.slice(0, 5).map((_, index) => {
+            const angle = (index * 72 - 90) * (Math.PI / 180);
+            const x = 150 + 120 * Math.cos(angle);
+            const y = 150 + 120 * Math.sin(angle);
+            return (
+              <line
+                key={index}
+                x1="150"
+                y1="150"
+                x2={x}
+                y2={y}
+                stroke="rgba(255,255,255,0.2)"
+                strokeWidth="1"
+              />
+            );
+          })}
+
+          {/* Data polygon */}
+          <polygon
+            points={stats.topGenres.slice(0, 5).map((genre, index) => {
+              const angle = (index * 72 - 90) * (Math.PI / 180);
+              const value = (genre.count / maxCount) * 120;
+              const x = 150 + value * Math.cos(angle);
+              const y = 150 + value * Math.sin(angle);
+              return `${x},${y}`;
+            }).join(' ')}
+            fill="rgba(102, 126, 234, 0.4)"
+            stroke="rgba(102, 126, 234, 0.8)"
+            strokeWidth="2"
+            className="radar-polygon"
+          />
+
+          {/* Data points */}
+          {stats.topGenres.slice(0, 5).map((genre, index) => {
+            const angle = (index * 72 - 90) * (Math.PI / 180);
+            const value = (genre.count / maxCount) * 120;
+            const x = 150 + value * Math.cos(angle);
+            const y = 150 + value * Math.sin(angle);
+            return (
+              <circle
+                key={index}
+                cx={x}
+                cy={y}
+                r="5"
+                fill="#667eea"
+                className="radar-point"
+              />
+            );
+          })}
+        </svg>
+
+        {/* Genre labels around the radar */}
+        <div className="genre-radar-labels">
+          {stats.topGenres.slice(0, 5).map((genre, index) => {
+            const angle = (index * 72 - 90) * (Math.PI / 180);
+            const x = 50 + 45 * Math.cos(angle);
+            const y = 50 + 45 * Math.sin(angle);
+            return (
+              <div
+                key={genre.genre}
+                className="radar-label"
+                style={{
+                  left: `${x}%`,
+                  top: `${y}%`
+                }}
+              >
+                {genre.genre}
+              </div>
+            );
+          })}
         </div>
-      ))}
+      </div>
+
+      {/* Traditional list view */}
+      <div className="genre-list-modern">
+        {stats.topGenres.slice(0, 5).map((genre, index) => (
+          <div key={genre.genre} className="genre-item-modern" style={{ animationDelay: `${index * 0.1}s` }}>
+            <div className="genre-left-modern">
+              <span className="genre-rank-modern">#{index + 1}</span>
+              <span className="genre-name-modern">{genre.genre}</span>
+            </div>
+            <div className="genre-right-modern">
+              <div className="genre-bar-bg">
+                <div
+                  className="genre-bar-fill"
+                  style={{
+                    width: `${(genre.count / maxCount) * 100}%`,
+                    animationDelay: `${index * 0.1}s`
+                  }}
+                />
+              </div>
+              <span className="genre-count-modern">{genre.count}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const TopStudiosSlide: React.FC<SlideProps> = ({ stats }) => (
   <div className="slide studios-slide">

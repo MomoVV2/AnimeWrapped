@@ -81,7 +81,156 @@
   opacity: 0.9;
 }
 
-/* Genres Slide */
+/* Genres Slide - ENHANCED WITH RADAR CHART */
+.genres-slide-enhanced {
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  overflow-y: auto;
+}
+
+.genre-radar-container {
+  position: relative;
+  width: 350px;
+  height: 350px;
+  margin: 2rem auto;
+  animation: scaleIn 0.8s ease-out;
+}
+
+.genre-radar {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.3));
+}
+
+.radar-polygon {
+  animation: radarPulse 3s ease-in-out infinite;
+}
+
+.radar-point {
+  animation: pointPulse 2s ease-in-out infinite;
+}
+
+@keyframes radarPulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@keyframes pointPulse {
+  0%, 100% {
+    r: 5;
+    opacity: 1;
+  }
+  50% {
+    r: 7;
+    opacity: 0.7;
+  }
+}
+
+.genre-radar-labels {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+}
+
+.radar-label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: rgba(255, 255, 255, 0.25);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  animation: fadeIn 1s ease-out backwards;
+  white-space: nowrap;
+}
+
+.genre-list-modern {
+  width: 100%;
+  max-width: 700px;
+  margin-top: 2rem;
+  padding: 0 1rem;
+}
+
+.genre-item-modern {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  margin: 0.8rem 0;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  animation: slideInUp 0.6s ease-out backwards;
+}
+
+.genre-item-modern:hover {
+  transform: translateY(-3px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.genre-left-modern {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+}
+
+.genre-rank-modern {
+  font-size: 1.5rem;
+  font-weight: 700;
+  min-width: 50px;
+}
+
+.genre-name-modern {
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.genre-right-modern {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex: 1;
+  max-width: 250px;
+}
+
+.genre-bar-bg {
+  flex: 1;
+  height: 25px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.genre-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  animation: growWidth 1s ease-out backwards;
+  transition: width 0.3s ease;
+}
+
+.genre-count-modern {
+  font-size: 1.2rem;
+  font-weight: 700;
+  min-width: 40px;
+  text-align: right;
+  padding: 0.4rem 0.8rem;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+/* Old Genres Slide (kept for compatibility) */
 .genres-slide {
   background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
 }
