@@ -32,36 +32,7 @@ function App() {
 
   useEffect(() => {
     const initAuth = async () => {
-      // Check if we're loading shared stats from URL path (e.g., /knownasmomo)
-      const pathname = window.location.pathname;
-      if (pathname.length > 1) {
-        const username = pathname.substring(1); // Remove leading slash
-        try {
-          setLoading(true);
-          const baseUrl = process.env.NODE_ENV === 'production'
-            ? ''
-            : 'http://localhost:3001';
-
-          const response = await fetch(`${baseUrl}/api/load?username=${encodeURIComponent(username)}`);
-
-          if (!response.ok) {
-            throw new Error('Stats not found');
-          }
-
-          const data = await response.json();
-          setStats(data.stats);
-          setIsSharedView(true);
-          setLoading(false);
-          return;
-        } catch (err) {
-          console.error('Failed to load shared stats:', err);
-          setError('Stats not found for this username');
-          setLoading(false);
-          return;
-        }
-      }
-
-      // Check if we're loading shared stats from URL hash (legacy method)
+      // Check if we're loading shared stats from URL hash
       const hash = window.location.hash;
       if (hash.startsWith('#share=')) {
         try {
@@ -200,57 +171,25 @@ function App() {
     window.location.hash = '';
   };
 
-  const handleShare = async () => {
+  const handleShare = () => {
     if (!stats) return;
 
     try {
-      // Ask for username
-      const username = prompt('Choose a username for your share link (letters, numbers, underscore only):');
-
-      if (!username) {
-        return; // User cancelled
-      }
-
-      // Sanitize username
-      const sanitized = username.toLowerCase().replace(/[^a-z0-9_]/g, '');
-
-      if (!sanitized) {
-        alert('Invalid username. Please use letters, numbers, or underscore only.');
-        return;
-      }
-
-      // Save to backend
-      const baseUrl = process.env.NODE_ENV === 'production'
-        ? ''
-        : 'http://localhost:3001';
-
-      const response = await fetch(`${baseUrl}/api/save`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: sanitized,
-          stats,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to save stats');
-      }
-
-      const data = await response.json();
+      // Encode stats to base64
+      const jsonString = JSON.stringify(stats);
+      const encoded = btoa(jsonString);
+      const shareUrl = `${window.location.origin}/#share=${encoded}`;
 
       // Copy to clipboard
-      navigator.clipboard.writeText(data.shareUrl).then(() => {
-        alert(`Share link created! 🎉\n\n${data.shareUrl}\n\nLink copied to clipboard!`);
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('Share link copied to clipboard! 🎉');
       }).catch(() => {
         // Fallback: show URL in prompt
-        prompt('Copy this share link:', data.shareUrl);
+        prompt('Copy this share link:', shareUrl);
       });
     } catch (err) {
       console.error('Share failed:', err);
-      alert('Failed to generate share link. Please try again.');
+      alert('Failed to generate share link');
     }
   };
 
