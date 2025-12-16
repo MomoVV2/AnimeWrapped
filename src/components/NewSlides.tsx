@@ -75,31 +75,56 @@ export const FormatsSlide: React.FC<SlideProps> = ({ stats }) => (
 
 export const VoiceActorsSlide: React.FC<SlideProps> = ({ stats }) => {
   const [showAll, setShowAll] = React.useState(false);
-  const displayCount = showAll ? stats.topVoiceActors.length : 5;
+  const displayCount = showAll ? stats.topVoiceActors.length : 10;
+  const maxCount = stats.topVoiceActors.length > 0 ? stats.topVoiceActors[0].count : 1;
 
   return (
     <div className="slide va-slide">
-      <h1>Voice Actors You Heard Most</h1>
+      <h1>🎤 Voice Actors You Heard Most</h1>
       <p className="subtitle">Japanese voice actors from your 2025 anime</p>
       {stats.topVoiceActors.length > 0 ? (
         <>
-          <div className="va-list">
+          <div className="va-list-animated">
             {stats.topVoiceActors.slice(0, displayCount).map((va, index) => (
-              <div key={va.name} className="va-item">
-                <span className="va-rank">#{index + 1}</span>
-                <span className="va-name">{va.name}</span>
-                <span className="va-count">{va.count} characters</span>
+              <div
+                key={va.name}
+                className="va-item-animated"
+                style={{
+                  animationDelay: `${index * 0.1}s`
+                }}
+              >
+                <div className="va-left">
+                  <span className="va-rank-medal">
+                    {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : `#${index + 1}`}
+                  </span>
+                  <span className="va-name-styled">{va.name}</span>
+                </div>
+                <div className="va-right">
+                  <div className="va-bar-container">
+                    <div
+                      className="va-bar"
+                      style={{
+                        width: `${(va.count / maxCount) * 100}%`,
+                        animationDelay: `${index * 0.1}s`
+                      }}
+                    />
+                  </div>
+                  <span className="va-count-badge">{va.count}</span>
+                </div>
               </div>
             ))}
           </div>
-          {stats.topVoiceActors.length > 5 && (
-            <button className="see-more-btn" onClick={() => setShowAll(!showAll)}>
-              {showAll ? 'Show Less' : `See All ${stats.topVoiceActors.length} →`}
+          {stats.topVoiceActors.length > 10 && (
+            <button className="see-more-btn-modern" onClick={() => setShowAll(!showAll)}>
+              {showAll ? '← Show Less' : `See All ${stats.topVoiceActors.length} →`}
             </button>
           )}
         </>
       ) : (
-        <p>Voice actor data not available for your 2024 anime</p>
+        <div className="no-data-message">
+          <p>🎭 Voice actor data not available</p>
+          <p className="no-data-subtitle">Try adding more anime to your 2025 list!</p>
+        </div>
       )}
     </div>
   );
@@ -144,58 +169,112 @@ export const GrandFinaleSlide: React.FC<SlideProps> = ({ stats }) => {
   const hours = Math.floor(stats.totalMinutes / 60);
 
   return (
-    <div className="slide grand-finale-slide">
-      <h1>{stats.userName}'s 2025 Anime Year</h1>
-      <img src={stats.avatar} alt={stats.userName} className="finale-avatar" />
+    <div className="slide grand-finale-slide-new">
+      <div className="finale-header-new">
+        <img src={stats.avatar} alt={stats.userName} className="finale-avatar-new" />
+        <h1 className="finale-title-new">{stats.userName}'s 2025</h1>
+        <p className="finale-subtitle-new">Anime Year in Review</p>
+      </div>
 
-      <div className="finale-grid">
-        <div className="finale-section">
-          <h2>📺 Watch Stats</h2>
-          <div className="finale-stat">{stats.totalAnime} anime</div>
-          <div className="finale-stat">{stats.totalEpisodes} episodes</div>
-          <div className="finale-stat">{hours.toLocaleString()} hours</div>
-          <div className="finale-stat">{stats.totalDays} days worth</div>
+      <div className="finale-stats-mega-grid">
+        {/* Main Big Stats */}
+        <div className="finale-card-hero">
+          <div className="hero-stat-row">
+            <div className="hero-stat">
+              <div className="hero-number">{stats.totalEpisodes}</div>
+              <div className="hero-label">Episodes Watched</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-number">{stats.totalAnime}</div>
+              <div className="hero-label">Anime Watched</div>
+            </div>
+          </div>
+          <div className="hero-stat-row">
+            <div className="hero-stat">
+              <div className="hero-number">{hours.toLocaleString()}</div>
+              <div className="hero-label">Hours Invested</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-number">{stats.averageEpisodesPerDay}</div>
+              <div className="hero-label">Episodes/Day</div>
+            </div>
+          </div>
         </div>
 
-        <div className="finale-section">
-          <h2>⭐ Your Ratings</h2>
-          <div className="finale-stat">Avg: {stats.meanScore}/10</div>
-          <div className="finale-stat">{stats.completionRate}% completion</div>
-          <div className="finale-stat">{stats.animeCompleted} completed</div>
+        {/* Completion Stats */}
+        <div className="finale-card-compact">
+          <h3 className="card-title">📊 Completion Stats</h3>
+          <div className="finale-mini-stats">
+            <div className="mini-stat"><span className="mini-label">Completion Rate:</span> <span className="mini-value">{stats.completionRate}%</span></div>
+            <div className="mini-stat"><span className="mini-label">Completed:</span> <span className="mini-value">{stats.animeCompleted}</span></div>
+            <div className="mini-stat"><span className="mini-label">Started:</span> <span className="mini-value">{stats.animeStarted}</span></div>
+            <div className="mini-stat"><span className="mini-label">Dropped:</span> <span className="mini-value">{stats.animeDropped}</span></div>
+          </div>
         </div>
 
-        <div className="finale-section">
-          <h2>🎨 Top Genres</h2>
-          {stats.topGenres.slice(0, 3).map(g => (
-            <div key={g.genre} className="finale-stat-small">{g.genre}</div>
-          ))}
+        {/* Rating Stats */}
+        <div className="finale-card-compact">
+          <h3 className="card-title">⭐ Your Ratings</h3>
+          <div className="finale-mini-stats">
+            <div className="mini-stat"><span className="mini-label">Average Score:</span> <span className="mini-value">{stats.meanScore}/10</span></div>
+            <div className="mini-stat"><span className="mini-label">Rated Anime:</span> <span className="mini-value">{stats.scoreDistribution.reduce((sum, s) => sum + s.count, 0)}</span></div>
+          </div>
         </div>
 
-        <div className="finale-section">
-          <h2>🏢 Top Studios</h2>
-          {stats.topStudios.slice(0, 3).map(s => (
-            <div key={s.studio} className="finale-stat-small">{s.studio}</div>
-          ))}
+        {/* Top Genres */}
+        <div className="finale-card-list">
+          <h3 className="card-title">🎨 Top Genres</h3>
+          <div className="finale-list-items">
+            {stats.topGenres.slice(0, 5).map((g, i) => (
+              <div key={g.genre} className="finale-list-item">
+                <span className="list-rank">#{i + 1}</span>
+                <span className="list-name">{g.genre}</span>
+                <span className="list-count">{g.count}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="finale-section">
-          <h2>📊 Format</h2>
-          <div className="finale-stat">{stats.favouriteFormat}</div>
+        {/* Top Studios */}
+        <div className="finale-card-list">
+          <h3 className="card-title">🏢 Top Studios</h3>
+          <div className="finale-list-items">
+            {stats.topStudios.slice(0, 5).map((s, i) => (
+              <div key={s.studio} className="finale-list-item">
+                <span className="list-rank">#{i + 1}</span>
+                <span className="list-name">{s.studio}</span>
+                <span className="list-count">{s.count}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="finale-section">
-          <h2>📅 Most Active</h2>
-          <div className="finale-stat">{stats.mostProductiveMonth}</div>
+        {/* Format & Activity */}
+        <div className="finale-card-compact">
+          <h3 className="card-title">📅 Activity</h3>
+          <div className="finale-mini-stats">
+            <div className="mini-stat"><span className="mini-label">Favorite Format:</span> <span className="mini-value">{stats.favouriteFormat}</span></div>
+            <div className="mini-stat"><span className="mini-label">Most Active Month:</span> <span className="mini-value">{stats.mostProductiveMonth}</span></div>
+          </div>
         </div>
       </div>
 
-      <div className="finale-message">
-        <p>You watched <strong>{stats.totalEpisodes} episodes</strong> across <strong>{stats.totalAnime} anime</strong></p>
-        <p>That's <strong>{stats.averageEpisodesPerDay} episodes per day</strong> on average!</p>
-        <p className="finale-thanks">Thanks for another amazing year of anime! 🎉</p>
+      <div className="finale-message-new">
+        <p className="finale-highlight">🎉 That's {stats.totalDays} days worth of anime!</p>
+        <p className="finale-tagline">Thanks for another amazing year! See you in 2026! ✨</p>
       </div>
 
-      <div className="share-prompt">Share your 2025 wrapped! #AniListWrapped2025</div>
+      <div className="finale-footer">
+        <div className="share-prompt-new">#AniListWrapped2025 🎬</div>
+        <a
+          href="https://x.com/knownasmomo"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="creator-credit"
+        >
+          Made by KnownAsMomo 💜
+        </a>
+      </div>
     </div>
   );
 };
