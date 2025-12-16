@@ -13,9 +13,9 @@ export default async function handler(req, res) {
 
   const requestBody = {
     grant_type: 'authorization_code',
-    client_id: process.env.REACT_APP_ANILIST_CLIENT_ID,
-    client_secret: process.env.REACT_APP_ANILIST_CLIENT_SECRET,
-    redirect_uri: process.env.REACT_APP_REDIRECT_URI,
+    client_id: process.env.ANILIST_CLIENT_ID || process.env.REACT_APP_ANILIST_CLIENT_ID,
+    client_secret: process.env.ANILIST_CLIENT_SECRET || process.env.REACT_APP_ANILIST_CLIENT_SECRET,
+    redirect_uri: process.env.ANILIST_REDIRECT_URI || process.env.REACT_APP_REDIRECT_URI,
     code,
   };
 
