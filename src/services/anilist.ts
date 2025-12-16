@@ -98,7 +98,6 @@ export const fetchUserData = async (token: string): Promise<UserStats> => {
 
   const userData = await graphqlQuery(userQuery, {}, token);
   const viewer = userData.Viewer;
-  const mangaStats = viewer.statistics.manga;
 
   // Get anime list for 2024 entries with more details
   const listQuery = `

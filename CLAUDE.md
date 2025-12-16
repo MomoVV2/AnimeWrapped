@@ -222,13 +222,40 @@ REACT_APP_ANILIST_CLIENT_SECRET=your_client_secret  # CURRENTLY REQUIRED (bug)
 - JSX: react-jsx (new transform, no need to import React in every file)
 - All source code in `src/` directory only
 
+## Sharing Feature (Vercel KV)
+
+Users can share their wrapped stats with clean URLs like `https://anime-wrapped-three.vercel.app/knownasmomo`.
+
+### Architecture
+- **Frontend**: `App.tsx:35-61` checks URL pathname for username and loads stats from `/api/load`
+- **Save API**: `api/save.js` - POST endpoint that stores stats in Vercel KV with 90-day expiration
+- **Load API**: `api/load.js` - GET endpoint that retrieves stats by username
+- **Fallback**: Legacy hash-based sharing (`#share=base64data`) still supported at `App.tsx:65-81`
+
+### User Flow
+1. User clicks "📤 Share" button (`App.tsx:203-255`)
+2. Prompts for username (sanitized to alphanumeric + underscore)
+3. POSTs stats to `/api/save`
+4. Returns clean URL and copies to clipboard
+5. Anyone can visit URL to view stats (read-only, no login required)
+
+### URL Routing (vercel.json)
+- Line 5-7: API routes pass through to serverless functions
+- Line 9-11: All other paths rewrite to `/index.html` for React Router
+- React checks pathname and loads shared stats if username is present
+
+### Dependencies
+- `@vercel/kv` package for Redis access
+- Vercel KV database must be created and linked in Vercel dashboard
+- Environment variables auto-configured when database is linked
+
 ## Common Development Tasks
 
 **Adding a new slide**:
 1. Create slide component in `components/WrappedSlides.tsx` or `components/NewSlides.tsx`
 2. Export the component
 3. Import in `App.tsx:3-19`
-4. Add to slides array in `App.tsx:104-118`
+4. Add to slides array in `App.tsx:125-139`
 5. Slide receives `stats: UserStats` as prop automatically
 
 **Modifying AniList queries**:
@@ -243,7 +270,6 @@ REACT_APP_ANILIST_CLIENT_SECRET=your_client_secret  # CURRENTLY REQUIRED (bug)
 - Update `activityByMonth` year at line 184
 
 **Debugging OAuth issues**:
-- Check browser console for auth flow logs (`App.tsx:38-40, 50, 58, 60`)
+- Check browser console for auth flow logs (`App.tsx:88-90`)
 - Verify redirect URI matches exactly in: `.env`, AniList settings, and Vercel env vars
-- Ensure proxy server is running on port 3001 for local development
 - Check that `isExchangingRef` prevents duplicate exchanges (React StrictMode issue)

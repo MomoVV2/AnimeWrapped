@@ -1,0 +1,5 @@
+ANILIST_REDIRECT_URI=https://anime-wrapped-three.vercel.app/auth/callback
+REACT_APP_REDIRECT_URI=https://anime-wrapped-three.vercel.app/auth/callback
+ANILIST_CLIENT_SECRET=1S43C1GiShn4IXkQoNkOKmIYuwTvmsJcXqCqzEUW
+REACT_APP_ANILIST_CLIENT_ID=33318
+ANILIST_CLIENT_ID=33318
