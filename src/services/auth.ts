@@ -2,7 +2,10 @@ export const AUTH_CONFIG = {
   clientId: process.env.REACT_APP_ANILIST_CLIENT_ID!,
   redirectUri: process.env.REACT_APP_REDIRECT_URI!,
   authEndpoint: 'https://anilist.co/api/v2/oauth/authorize',
-  proxyEndpoint: 'http://localhost:3001/api/token',
+  // Use Vercel serverless function in production, local proxy in development
+  proxyEndpoint: process.env.NODE_ENV === 'production'
+    ? '/api/token'
+    : 'http://localhost:3001/api/token',
 };
 
 export const initiateLogin = () => {
