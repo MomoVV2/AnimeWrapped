@@ -214,7 +214,7 @@ function App() {
     );
   }
 
-  if (!token || !stats) {
+  if (!stats) {
     return (
       <div className="App login-screen">
         <div className="login-content">
