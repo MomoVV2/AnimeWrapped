@@ -165,6 +165,45 @@ export const StatsOverviewSlide: React.FC<SlideProps> = ({ stats }) => {
   );
 };
 
+export const TopMangaSlide: React.FC<SlideProps> = ({ stats }) => {
+  const [showAll, setShowAll] = React.useState(false);
+  const displayCount = showAll ? stats.topManga.length : 5;
+
+  return (
+    <div className="slide top-manga-slide">
+      <h1>📚 Your Top Rated Manga</h1>
+      <p className="subtitle">Your highest scored manga in 2025</p>
+      {stats.topManga.length > 0 ? (
+        <>
+          <div className="top-manga-grid">
+            {stats.topManga.slice(0, displayCount).map((manga, index) => (
+              <div key={manga.title} className="manga-card">
+                <div className="manga-rank">#{index + 1}</div>
+                <img src={manga.coverImage} alt={manga.title} />
+                <div className="manga-info">
+                  <h3>{manga.title}</h3>
+                  <div className="manga-score">⭐ {manga.score}/10</div>
+                  <div className="manga-chapters">{manga.chapters} chapters</div>
+                </div>
+              </div>
+            ))}
+          </div>
+          {stats.topManga.length > 5 && (
+            <button className="see-more-btn" onClick={() => setShowAll(!showAll)}>
+              {showAll ? 'Show Less' : `See All ${stats.topManga.length} →`}
+            </button>
+          )}
+        </>
+      ) : (
+        <div className="no-data-message">
+          <p>📖 No manga rated yet!</p>
+          <p className="no-data-subtitle">Start reading some manga in 2025!</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const GrandFinaleSlide: React.FC<SlideProps> = ({ stats }) => {
   const hours = Math.floor(stats.totalMinutes / 60);
 
@@ -261,11 +300,9 @@ export const GrandFinaleSlide: React.FC<SlideProps> = ({ stats }) => {
 
       <div className="finale-message-new">
         <p className="finale-highlight">🎉 That's {stats.totalDays} days worth of anime!</p>
-        <p className="finale-tagline">Thanks for another amazing year! See you in 2026! ✨</p>
       </div>
 
       <div className="finale-footer">
-        <div className="share-prompt-new">#AniListWrapped2025 🎬</div>
         <a
           href="https://x.com/knownasmomo"
           target="_blank"

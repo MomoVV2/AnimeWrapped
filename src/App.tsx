@@ -15,6 +15,7 @@ import {
   FormatsSlide,
   VoiceActorsSlide,
   StatsOverviewSlide,
+  TopMangaSlide,
   GrandFinaleSlide,
 } from './components/NewSlides';
 import { initiateLogin, exchangeCodeForToken, getStoredToken, clearToken } from './services/auth';
@@ -109,6 +110,7 @@ function App() {
     TopStudiosSlide,
     FormatsSlide,
     TopAnimeSlide,
+    TopMangaSlide,
     ScoreDistributionSlide,
     VoiceActorsSlide,
     StatsOverviewSlide,

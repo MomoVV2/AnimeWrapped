@@ -15,6 +15,7 @@ export interface UserStats {
   formatDistribution: Array<{ format: string; count: number }>;
   activityByMonth: Array<{ month: string; count: number }>;
   topAnime: Array<{ title: string; coverImage: string; score: number; episodes: number }>;
+  topManga: Array<{ title: string; coverImage: string; score: number; chapters: number }>;
   completionRate: number;
   longestStreak: number;
   averageEpisodesPerDay: number;
@@ -158,6 +159,59 @@ export const fetchUserData = async (token: string): Promise<UserStats> => {
 
   const listData = await graphqlQuery(listQuery, { userId: viewer.id }, token);
 
+  // Get manga list for 2025
+  const mangaListQuery = `
+    query ($userId: Int) {
+      MediaListCollection(userId: $userId, type: MANGA) {
+        lists {
+          entries {
+            status
+            media {
+              id
+              title {
+                romaji
+              }
+              coverImage {
+                large
+              }
+              chapters
+              format
+            }
+            score
+            progress
+            completedAt {
+              year
+              month
+            }
+            startedAt {
+              year
+              month
+            }
+          }
+        }
+      }
+    }
+  `;
+
+  const mangaListData = await graphqlQuery(mangaListQuery, { userId: viewer.id }, token);
+  const allMangaEntries = mangaListData.MediaListCollection.lists.flatMap((list: any) => list.entries);
+  const manga2025 = allMangaEntries.filter((entry: any) =>
+    (entry.completedAt?.year === 2025) ||
+    (entry.startedAt?.year === 2025 && !entry.completedAt)
+  );
+
+  // Top manga by score - top 10
+  const topManga = manga2025
+    .filter((e: any) => e.score > 0)
+    .sort((a: any, b: any) => b.score - a.score)
+    .slice(0, 10)
+    .map((entry: any) => ({
+      title: entry.media.title.romaji,
+      coverImage: entry.media.coverImage.large,
+      score: entry.score,
+      chapters: entry.progress,
+    }));
+
   // Filter for 2025 data - ONLY entries completed or watched in 2025
   const allEntries = listData.MediaListCollection.lists.flatMap((list: any) => list.entries);
   const entries2025 = allEntries.filter((entry: any) =>
@@ -291,14 +345,15 @@ export const fetchUserData = async (token: string): Promise<UserStats> => {
     totalAnime: entries2025.length,
     totalEpisodes: total2025Episodes,
     totalMinutes: estimatedMinutes2025,
-    totalManga: mangaStats.count,
-    totalChapters: mangaStats.chaptersRead,
+    totalManga: manga2025.length,
+    totalChapters: manga2025.reduce((sum: number, e: any) => sum + e.progress, 0),
     meanScore: Number(meanScore2025.toFixed(1)),
     topGenres: topGenres2025,
     topStudios: topStudios2025,
     formatDistribution: Array.from(formatCounts.entries()).map(([format, count]) => ({ format, count })),
     activityByMonth,
     topAnime,
+    topManga,
     completionRate,
     longestStreak: 0, // Would need more complex calculation
     averageEpisodesPerDay,

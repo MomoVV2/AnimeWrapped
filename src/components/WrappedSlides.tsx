@@ -18,6 +18,7 @@ export const WelcomeSlide: React.FC<SlideProps> = ({ stats }) => (
 export const WatchTimeSlide: React.FC<SlideProps> = ({ stats }) => {
   const hours = Math.floor(stats.totalMinutes / 60);
   const days = Math.floor(hours / 24);
+  const remainingHours = hours % 24;
 
   return (
     <div className="slide watch-time-slide">
@@ -26,12 +27,16 @@ export const WatchTimeSlide: React.FC<SlideProps> = ({ stats }) => {
       <h2>episodes in 2025</h2>
       <div className="sub-stats">
         <div className="stat-item">
-          <div className="stat-value">{hours.toLocaleString()}</div>
+          <div className="stat-value">{days}</div>
+          <div className="stat-label">days</div>
+        </div>
+        <div className="stat-item">
+          <div className="stat-value">{remainingHours}</div>
           <div className="stat-label">hours</div>
         </div>
         <div className="stat-item">
-          <div className="stat-value">{days}</div>
-          <div className="stat-label">days</div>
+          <div className="stat-value">{stats.totalMinutes.toLocaleString()}</div>
+          <div className="stat-label">minutes</div>
         </div>
       </div>
       <p className="fun-fact">
