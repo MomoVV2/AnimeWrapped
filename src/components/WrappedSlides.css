@@ -1,13 +1,35 @@
 .slide {
   min-height: 100vh;
+  max-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  padding: 40px;
+  padding: 40px 40px 120px 40px;
   text-align: center;
   color: white;
   position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #0B1622;
+}
+
+/* Custom scrollbar for dark theme */
+.slide::-webkit-scrollbar {
+  width: 8px;
+}
+
+.slide::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.slide::-webkit-scrollbar-thumb {
+  background: rgba(91, 133, 200, 0.5);
+  border-radius: 4px;
+}
+
+.slide::-webkit-scrollbar-thumb:hover {
+  background: rgba(91, 133, 200, 0.7);
 }
 
 .slide h1 {
@@ -27,9 +49,10 @@
   opacity: 0.8;
 }
 
-/* Welcome Slide */
+/* Welcome Slide - Dark Mode */
 .welcome-slide {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #0B1622 0%, #1a2840 50%, #2d3e56 100%);
+  padding-top: 80px !important;
 }
 
 .user-avatar {
@@ -1252,4 +1275,52 @@
   .card-title {
     font-size: 1.1rem;
   }
+}
+/* Dark Theme Color Overrides */
+.watch-time-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1a2f45 50%, #2d4a6b 100%) !important;
+}
+
+.genres-slide-enhanced {
+  background: linear-gradient(135deg, #0B1622 0%, #1a2332 50%, #2a3647 100%) !important;
+}
+
+.studios-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1f2937 50%, #374151 100%) !important;
+}
+
+.top-anime-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1e293b 50%, #334155 100%) !important;
+}
+
+.activity-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1a2533 50%, #2a3a4d 100%) !important;
+}
+
+.summary-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1c2938 50%, #2d4152 100%) !important;
+}
+
+.completion-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1a2e40 50%, #2a475f 100%) !important;
+}
+
+.score-dist-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1f2633 50%, #2f3c4d 100%) !important;
+}
+
+.formats-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1b2837 50%, #2b3f57 100%) !important;
+}
+
+.va-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1a2738 50%, #2a3d58 100%) !important;
+}
+
+.stats-overview-slide {
+  background: linear-gradient(135deg, #0B1622 0%, #1c2a3c 50%, #2c4156 100%) !important;
+}
+
+.grand-finale-slide-new {
+  background: linear-gradient(135deg, #0B1622 0%, #1a2840 50%, #2a4060 100%) !important;
 }
