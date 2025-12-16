@@ -116,10 +116,11 @@ git push heroku main
 ```
 
 #### Vercel / Netlify
-- The app requires a backend server for OAuth, so you'll need to:
-  - Deploy the proxy server separately (e.g., on Heroku, Railway)
-  - Update `REACT_APP_PROXY_ENDPOINT` in your .env
-  - Deploy the React app to Vercel/Netlify
+- A serverless OAuth proxy is included at `/api/token` for Vercel/Netlify deployments.
+- Steps:
+  - Set env vars in your hosting provider: `REACT_APP_ANILIST_CLIENT_ID`, `REACT_APP_ANILIST_CLIENT_SECRET`, `REACT_APP_REDIRECT_URI=https://your-app.vercel.app/` (or custom domain)
+  - Deploy the repo directly; the `/api/token` function will handle token exchange without a separate server
+  - For local dev with `npm start`, set `REACT_APP_PROXY_ENDPOINT=http://localhost:3001/api/token` and run `node server.js` alongside the React app
 
 #### Docker on VPS
 ```bash
