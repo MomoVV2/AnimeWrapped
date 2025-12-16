@@ -219,23 +219,122 @@ export const ActivitySlide: React.FC<SlideProps> = ({ stats }) => {
     month.count > max.count ? month : max
   );
 
+  // Generate SVG line graph
+  const width = 800;
+  const height = 300;
+  const padding = 40;
+  const graphWidth = width - padding * 2;
+  const graphHeight = height - padding * 2;
+
+  const points = stats.activityByMonth.map((month, index) => {
+    const x = padding + (index / 11) * graphWidth;
+    const y = height - padding - (month.count / maxCount) * graphHeight;
+    return { x, y, count: month.count };
+  });
+
+  const linePoints = points.map(p => `${p.x},${p.y}`).join(' ');
+
   return (
     <div className="slide activity-slide">
-      <h1>Your Activity</h1>
+      <h1>📈 Your 2025 Activity</h1>
       <p className="activity-subtitle">Anime completed each month</p>
-      <div className="activity-chart">
-        {stats.activityByMonth.map((month) => (
-          <div key={month.month} className="month-bar">
-            <div
-              className="bar"
-              style={{ height: `${(month.count / maxCount) * 200}px` }}
-            >
-              <span className="bar-value">{month.count}</span>
-            </div>
-            <div className="month-label">{month.month}</div>
-          </div>
-        ))}
+
+      <div className="activity-graph-container">
+        <svg className="activity-graph" viewBox={`0 0 ${width} ${height}`}>
+          {/* Grid lines */}
+          {[0, 1, 2, 3, 4].map((i) => {
+            const y = height - padding - (i / 4) * graphHeight;
+            return (
+              <g key={i}>
+                <line
+                  x1={padding}
+                  y1={y}
+                  x2={width - padding}
+                  y2={y}
+                  stroke="rgba(255,255,255,0.1)"
+                  strokeWidth="1"
+                />
+                <text
+                  x={padding - 10}
+                  y={y + 5}
+                  fill="rgba(255,255,255,0.6)"
+                  fontSize="12"
+                  textAnchor="end"
+                >
+                  {Math.round((maxCount * i) / 4)}
+                </text>
+              </g>
+            );
+          })}
+
+          {/* Area under the line */}
+          <defs>
+            <linearGradient id="areaGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="rgba(91, 133, 200, 0.5)" />
+              <stop offset="100%" stopColor="rgba(91, 133, 200, 0.05)" />
+            </linearGradient>
+          </defs>
+          <polygon
+            points={`${padding},${height - padding} ${linePoints} ${width - padding},${height - padding}`}
+            fill="url(#areaGradient)"
+          />
+
+          {/* The line */}
+          <polyline
+            points={linePoints}
+            fill="none"
+            stroke="rgba(91, 133, 200, 1)"
+            strokeWidth="3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="activity-line"
+          />
+
+          {/* Data points */}
+          {points.map((point, index) => (
+            <g key={index}>
+              <circle
+                cx={point.x}
+                cy={point.y}
+                r="5"
+                fill="#5B85C8"
+                className="activity-point"
+              />
+              {point.count > 0 && (
+                <text
+                  x={point.x}
+                  y={point.y - 15}
+                  fill="white"
+                  fontSize="14"
+                  fontWeight="bold"
+                  textAnchor="middle"
+                >
+                  {point.count}
+                </text>
+              )}
+            </g>
+          ))}
+
+          {/* Month labels */}
+          {stats.activityByMonth.map((month, index) => {
+            const x = padding + (index / 11) * graphWidth;
+            return (
+              <text
+                key={month.month}
+                x={x}
+                y={height - padding + 25}
+                fill="rgba(255,255,255,0.8)"
+                fontSize="12"
+                textAnchor="middle"
+                fontWeight="500"
+              >
+                {month.month}
+              </text>
+            );
+          })}
+        </svg>
       </div>
+
       <p className="fun-fact">
         Your busiest month was <strong>{busiestMonth.month}</strong> with {busiestMonth.count} anime!
       </p>
