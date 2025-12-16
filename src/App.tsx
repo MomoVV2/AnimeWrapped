@@ -27,10 +27,30 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [isSharedView, setIsSharedView] = useState(false);
   const isExchangingRef = useRef(false);
 
   useEffect(() => {
     const initAuth = async () => {
+      // Check if we're loading shared stats from URL hash
+      const hash = window.location.hash;
+      if (hash.startsWith('#share=')) {
+        try {
+          const encodedData = hash.substring(7);
+          const decodedData = atob(encodedData);
+          const sharedStats = JSON.parse(decodedData);
+          setStats(sharedStats);
+          setIsSharedView(true);
+          setLoading(false);
+          return;
+        } catch (err) {
+          console.error('Failed to load shared stats:', err);
+          setError('Invalid share link');
+          setLoading(false);
+          return;
+        }
+      }
+
       // Check if we're returning from OAuth
       const params = new URLSearchParams(window.location.search);
       const code = params.get('code');
@@ -147,6 +167,30 @@ function App() {
     setToken(null);
     setStats(null);
     setCurrentSlide(0);
+    setIsSharedView(false);
+    window.location.hash = '';
+  };
+
+  const handleShare = () => {
+    if (!stats) return;
+
+    try {
+      // Encode stats to base64
+      const jsonString = JSON.stringify(stats);
+      const encoded = btoa(jsonString);
+      const shareUrl = `${window.location.origin}/#share=${encoded}`;
+
+      // Copy to clipboard
+      navigator.clipboard.writeText(shareUrl).then(() => {
+        alert('Share link copied to clipboard! 🎉\n\nAnyone with this link can view your wrapped stats!');
+      }).catch(() => {
+        // Fallback: show URL in prompt
+        prompt('Copy this share link:', shareUrl);
+      });
+    } catch (err) {
+      console.error('Share failed:', err);
+      alert('Failed to generate share link');
+    }
   };
 
   if (loading) {
@@ -218,9 +262,22 @@ function App() {
         </button>
       </div>
 
-      <button onClick={handleLogout} className="logout-button">
-        Logout
-      </button>
+      <div className="top-buttons">
+        {!isSharedView && (
+          <button onClick={handleShare} className="share-button">
+            📤 Share
+          </button>
+        )}
+        {!isSharedView ? (
+          <button onClick={handleLogout} className="logout-button">
+            Logout
+          </button>
+        ) : (
+          <button onClick={() => window.location.href = '/'} className="logout-button">
+            Create Your Own
+          </button>
+        )}
+      </div>
     </div>
   );
 }
