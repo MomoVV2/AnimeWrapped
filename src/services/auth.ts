@@ -11,7 +11,7 @@ const getRedirectUri = () => {
 };
 
 export const AUTH_CONFIG = {
-  clientId: process.env.REACT_APP_ANILIST_CLIENT_ID!,
+  clientId: process.env.REACT_APP_ANILIST_CLIENT_ID || '',
   redirectUri: getRedirectUri(),
   authEndpoint: 'https://anilist.co/api/v2/oauth/authorize',
   proxyEndpoint: process.env.REACT_APP_PROXY_ENDPOINT
@@ -19,6 +19,11 @@ export const AUTH_CONFIG = {
       ? 'http://localhost:3001/api/token'
       : '/api/token'),
 };
+
+// Validate configuration
+if (!AUTH_CONFIG.clientId) {
+  console.error('REACT_APP_ANILIST_CLIENT_ID is not set! Check Vercel environment variables.');
+}
 
 export const initiateLogin = () => {
   const params = new URLSearchParams({
