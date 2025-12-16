@@ -11,11 +11,23 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Authorization code is required' });
   }
 
+  // Hardcoded fallbacks for Vercel deployment
+  const clientId = process.env.ANILIST_CLIENT_ID || process.env.REACT_APP_ANILIST_CLIENT_ID || '33318';
+  const clientSecret = process.env.ANILIST_CLIENT_SECRET || process.env.REACT_APP_ANILIST_CLIENT_SECRET || '1S43C1GiShn4IXkQoNkOKmIYuwTvmsJcXqCqzEUW';
+  const redirectUri = process.env.ANILIST_REDIRECT_URI || process.env.REACT_APP_REDIRECT_URI || 'https://anime-wrapped-three.vercel.app/auth/callback';
+
+  console.log('Token exchange request:', {
+    clientId,
+    redirectUri,
+    hasSecret: !!clientSecret,
+    hasCode: !!code,
+  });
+
   const requestBody = {
     grant_type: 'authorization_code',
-    client_id: process.env.ANILIST_CLIENT_ID || process.env.REACT_APP_ANILIST_CLIENT_ID,
-    client_secret: process.env.ANILIST_CLIENT_SECRET || process.env.REACT_APP_ANILIST_CLIENT_SECRET,
-    redirect_uri: process.env.ANILIST_REDIRECT_URI || process.env.REACT_APP_REDIRECT_URI,
+    client_id: clientId,
+    client_secret: clientSecret,
+    redirect_uri: redirectUri,
     code,
   };
 
